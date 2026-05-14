@@ -136,6 +136,22 @@ static const char *menucmd[] = {
     "-l", "10",
     NULL
 };
+/* volume */
+static const char *up_vol[]   = { "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%+", NULL };
+static const char *down_vol[] = { "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-", NULL };
+static const char *mute_vol[] = { "wpctl", "set-mute",   "@DEFAULT_AUDIO_SINK@", "toggle", NULL };
+
+/* Microphone mute */
+static const char *mute_mic[] = { "wpctl", "set-mute", "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL };
+
+/* brightness */
+static const char *up_bright[]   = { "brightnessctl", "set", "+5%", NULL };
+static const char *down_bright[] = { "brightnessctl", "set", "5%-", NULL };
+
+/* Media player controls */
+static const char *play_pause[] = { "playerctl", "play-pause", NULL };
+static const char *next_track[] = { "playerctl", "next", NULL };
+static const char *prev_track[] = { "playerctl", "previous", NULL };
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: 2 -> at, etc. */
 	/* modifier                  key                  function          argument */
@@ -178,7 +194,16 @@ static const Key keys[] = {
 	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                      7),
 	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                     8),
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           quit,             {0} },
-
+        /* Media / Fn keys */
+        { 0, XKB_KEY_XF86AudioRaiseVolume, spawn, {.v = up_vol } },
+        { 0, XKB_KEY_XF86AudioLowerVolume, spawn, {.v = down_vol } },
+        { 0, XKB_KEY_XF86AudioMute,        spawn, {.v = mute_vol } },
+        { 0, XKB_KEY_XF86AudioPlay,        spawn, {.v = play_pause } },
+        { 0, XKB_KEY_XF86AudioNext,        spawn, {.v = next_track } },
+        { 0, XKB_KEY_XF86AudioPrev,        spawn, {.v = prev_track } },
+        { 0, XKB_KEY_XF86AudioMicMute, spawn, {.v = mute_mic } },
+        { 0, XKB_KEY_XF86MonBrightnessUp,   spawn, {.v = up_bright } },
+        { 0, XKB_KEY_XF86MonBrightnessDown, spawn, {.v = down_bright } },
 	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
 	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },
 	/* Ctrl-Alt-Fx is used to switch to another VT, if you don't know what a VT is
